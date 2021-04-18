@@ -12,8 +12,8 @@
     <div class="card-body" style="width: 60%;">
 
 
-      <form>
-        <div class="form-group row" [formGroup]="registerForm" (ngSubmit)="registerUser()">
+      <form  [formGroup]="registerForm" (ngSubmit)="registerUser()">
+        <div class="form-group row">
           <label for="inputName" class="col-sm-2 col-form-label">Full Name</label>
           <div class="col-sm-10">
             <input type="text" class="form-control" formControlName="name" id="inputName" placeholder="Full Name">
@@ -48,7 +48,7 @@
         <div class="form-group row">
           <label for="inputNumber" class="col-sm-2 col-form-label">Mobile Number</label>
           <div class="col-sm-10">
-            <input type="number" class="form-control" formArrayName="number" id="inputNumber" placeholder="Mobile Number">
+            <input type="number" class="form-control" formControlName="number" id="inputNumber" placeholder="Mobile Number">
             <div class="error-container">
               <ng-container *ngFor="let validation of validation_messages.number">
                 <div class="error-message" *ngIf="registerForm.get('number')?.hasError(validation.type) && (registerForm.get('number')?.dirty || registerForm.get('number')?.touched)">
@@ -67,21 +67,6 @@
             <div class="error-container">
               <ng-container *ngFor="let validation of validation_messages.password">
                 <div class="error-message" *ngIf="registerForm.get('password')?.hasError(validation.type) && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)">
-
-                  <span>{{ validation.message }}</span>
-                </div>
-              </ng-container>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group row">
-          <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
-          <div class="col-sm-10">
-            <input type="password" class="form-control" formControlName="confirmPassword" id="inputPassword3" placeholder="Password">
-            <div class="error-container">
-              <ng-container *ngFor="let validation of validation_messages.confirmPassword">
-                <div class="error-message" *ngIf="registerForm.get('confirmPassword')?.hasError(validation.type) && (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched)">
 
                   <span>{{ validation.message }}</span>
                 </div>

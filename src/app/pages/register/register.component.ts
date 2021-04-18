@@ -1,5 +1,5 @@
 import { Component, OnInit,NgZone } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
@@ -8,6 +8,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class RegisterComponent implements OnInit {
 
+  userDatabase: any = []
 
   registerForm: FormGroup;
 
@@ -43,10 +44,8 @@ export class RegisterComponent implements OnInit {
           Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
         ])),
         'password': new FormControl('', Validators.compose([
-          Validators.required
-        ])),
-        'confirmPassword': new FormControl('', Validators.compose([
-          Validators.required
+          Validators.required,
+          Validators.minLength(6)
         ])),
         'name': new FormControl('', Validators.compose([
           Validators.required
@@ -60,17 +59,18 @@ export class RegisterComponent implements OnInit {
     ngOnInit(): void {
     }
     registerUser(){
-      const username = this.registerForm.value.email;
-      const password = this.registerForm.value.password;
-      const confirmPassword = this.registerForm.value.confirmPassword;
 
-      const name = this.registerForm.value.name;
-      const number = this.registerForm.value.number;
-      console.log(username);
-      console.log(password);
-      console.log(confirmPassword);
-      console.log(name);
-      console.log(number)
+
+      const data =
+        {
+         "username":this.registerForm.value.email,
+         "password":this.registerForm.value.password,
+         "name":this.registerForm.value.name,
+         "number": this.registerForm.value.number,
+        }
+        this.userDatabase.push(data)
+        localStorage.setItem('data',JSON.stringify(this.userDatabase))
+
 
 
     }
