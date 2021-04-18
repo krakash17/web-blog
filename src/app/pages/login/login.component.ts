@@ -1,9 +1,7 @@
 import { Component, OnInit,NgZone } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { FORM_ERROR } from 'final-form'
-import { Console } from 'console';
-import { JsonPipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/user.service';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +26,8 @@ validation_messages = {
 };
 
   constructor(private ngZone: NgZone,
-    private route: Router) {
+    private route: Router,
+    private userService : UserService) {
     this.loginForm = new FormGroup({
       'email': new FormControl('', Validators.compose([
         Validators.required,
@@ -42,30 +41,46 @@ validation_messages = {
 
   ngOnInit(): void {
   }
-  userDatabase: any =[];
+  userDatabase: any;
   userData = {}
+  loggedIn = false;
+
+
+
+  //function for loogging into the app
   loginUser(){
     const username = this.loginForm.value.email;
     const password = this.loginForm.value.password;
 
-    this.userDatabase = localStorage.getItem('data');
-
-    for(let i=0;i<this.userDatabase.length; i++){
+    this.userDatabase = JSON.parse(localStorage.getItem('data')!);
+    
+    for(var i=0; i<this.userDatabase.length; i++){
       if(username === this.userDatabase[i].username && password === this.userDatabase[i].password ){
-        this.userData = this.userDatabase[i];
+        const userData = {
+          "username": username,
+          "name": this.userDatabase[i].name,
+          "number": this.userDatabase[i].number,
+          "id":this.userDatabase[i].id
+        }
+    
+        localStorage.setItem('User',JSON.stringify(userData))
+        console.log(username);
+        console.log(password);
         this.route.navigateByUrl('/posts');
+        this.loggedIn = true;
+        this.userService.isUserLoggedIn.next(true);
+        break;
       }
+      
+
+    }
+    if(!this.loggedIn){
+      alert('Wrong Credentials');
     }
 
 
-    const userData = {
-      username: username,
-      password: password
-    }
 
-    localStorage.setItem('User',JSON.stringify(userData))
-    console.log(username);
-    console.log(password);
+    
 
 
   }

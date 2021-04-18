@@ -1,5 +1,6 @@
 import { Component, OnInit,NgZone } from '@angular/core';
 import {FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -9,7 +10,7 @@ import {FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 export class RegisterComponent implements OnInit {
 
   userDatabase: any = []
-
+  allUserData: any =[]
   registerForm: FormGroup;
 
 
@@ -37,7 +38,8 @@ export class RegisterComponent implements OnInit {
     ],
   };
 
-    constructor(private ngZone: NgZone,) {
+    constructor(private ngZone: NgZone,
+      private route: Router) {
       this.registerForm = new FormGroup({
         'email': new FormControl('', Validators.compose([
           Validators.required,
@@ -58,20 +60,33 @@ export class RegisterComponent implements OnInit {
 
     ngOnInit(): void {
     }
+
+
+
+
+    //function for registering the user to localstorage
     registerUser(){
 
+    var userId;
+     this.allUserData = JSON.parse(localStorage.getItem('data')!);
+     if(this.allUserData === null){
+      userId = 1;
+      this.allUserData =[];
 
+     }
+     else{
+       userId = this.allUserData.length + 1
+     }
       const data =
-        {
+        { "id": userId,
          "username":this.registerForm.value.email,
          "password":this.registerForm.value.password,
          "name":this.registerForm.value.name,
          "number": this.registerForm.value.number,
         }
-        this.userDatabase.push(data)
-        localStorage.setItem('data',JSON.stringify(this.userDatabase))
-
-
-
+        this.allUserData.push(data);
+        localStorage.setItem('data',JSON.stringify(this.allUserData))
+        alert('User Added Succesfully');
+        this.route.navigateByUrl('login');
     }
 }

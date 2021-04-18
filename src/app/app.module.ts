@@ -10,6 +10,10 @@ import { RegisterComponent } from './pages/register/register.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PostsComponent } from './pages/posts/posts.component';
+import { HttpClientModule } from '@angular/common/http';
+import { SinglePostComponent } from './components/single-post/single-post.component';
+import { UserService } from './user.service';
+
 
 @NgModule({
   declarations: [
@@ -17,7 +21,8 @@ import { PostsComponent } from './pages/posts/posts.component';
     NavbarComponent,
     LoginComponent,
     RegisterComponent,
-    PostsComponent
+    PostsComponent,
+    SinglePostComponent
   ],
   imports: [
     BrowserModule,
@@ -25,11 +30,12 @@ import { PostsComponent } from './pages/posts/posts.component';
     RouterModule,
     BrowserAnimationsModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
 
 
   ],
-  providers: [],
+  providers: [UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
