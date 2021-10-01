@@ -1,4 +1,5 @@
-import { Component, OnInit,NgZone } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/user.service';
@@ -10,24 +11,23 @@ import { UserService } from 'src/app/user.service';
 })
 export class LoginComponent implements OnInit {
 
-
+ token: any = {}
   loginForm: FormGroup;
-
-
-validation_messages = {
-  'email': [
-    { type: 'required', message: 'Email is required.' },
-    { type: 'pattern', message: 'Enter a valid email.' }
-  ],
-  'password': [
-    { type: 'required', message: 'Password is required.' },
-    { type: 'minlength', message: 'Password must be at least 6 characters long.' }
-  ]
-};
+  validation_messages = {
+    'email': [
+      { type: 'required', message: 'Email is required.' },
+      { type: 'pattern', message: 'Enter a valid email.' }
+    ],
+    'password': [
+      { type: 'required', message: 'Password is required.' },
+      { type: 'minlength', message: 'Password must be at least 6 characters long.' }
+    ]
+  };
 
   constructor(private ngZone: NgZone,
+    private http: HttpClient,
     private route: Router,
-    private userService : UserService) {
+    private userService: UserService) {
     this.loginForm = new FormGroup({
       'email': new FormControl('', Validators.compose([
         Validators.required,
@@ -37,7 +37,7 @@ validation_messages = {
         Validators.required
       ]))
     });
-   }
+  }
 
   ngOnInit(): void {
   }
@@ -45,43 +45,28 @@ validation_messages = {
   userData = {}
   loggedIn = false;
 
-
-
   //function for loogging into the app
-  loginUser(){
-    const username = this.loginForm.value.email;
-    const password = this.loginForm.value.password;
-
-    this.userDatabase = JSON.parse(localStorage.getItem('data')!);
+  loginUser() {
     
-    for(var i=0; i<this.userDatabase.length; i++){
-      if(username === this.userDatabase[i].username && password === this.userDatabase[i].password ){
+
         const userData = {
-          "username": username,
-          "name": this.userDatabase[i].name,
-          "number": this.userDatabase[i].number,
-          "id":this.userDatabase[i].id
+          "email":this.loginForm.value.email,
+          "password":this.loginForm.value.password
+         
         }
-    
-        localStorage.setItem('User',JSON.stringify(userData))
-        console.log(username);
-        console.log(password);
-        this.route.navigateByUrl('/posts');
-        this.loggedIn = true;
-        this.userService.isUserLoggedIn.next(true);
-        break;
-      }
-      
 
-    }
-    if(!this.loggedIn){
-      alert('Wrong Credentials');
-    }
-
-
-
-    
-
-
+        var url = 'localhost:8001/auth/user'
+        this.http.post('http://localhost:8001/auth/user-login',userData).subscribe(res => {
+          console.log(res)
+          this.token = res;
+          localStorage.setItem('token', JSON.stringify(this.token.data))
+          this.route.navigateByUrl('/posts');
+          this.loggedIn = true;
+          this.userService.isUserLoggedIn.next(true);
+        },
+        err => {
+          console.log(err);
+        }
+        )
   }
 }

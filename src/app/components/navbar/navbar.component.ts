@@ -8,32 +8,31 @@ import { UserService } from 'src/app/user.service';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-User: any;
-loggedIn = false;
-isUserLoggedIn:boolean = false;
+  User: any;
+  loggedIn = false;
+  isUserLoggedIn: boolean = false;
 
   constructor(private route: Router,
-  private userService: UserService) { 
-    this.userService.isUserLoggedIn.subscribe( value => {
+    private userService: UserService) {
+    this.userService.isUserLoggedIn.subscribe(value => {
       this.getUser();
       this.isUserLoggedIn = value;
-
-  });
+    });
   }
 
   ngOnInit() {
-    
+
   }
 
-  getUser(){
+  getUser() {
     this.User = JSON.parse(localStorage.getItem('User')!);
-    if(this.User){
+    if (this.User) {
       this.loggedIn = true;
     }
   }
 
-  
-  logOut(){
+
+  logOut() {
     localStorage.removeItem('User');
     this.route.navigateByUrl('');
     this.userService.isUserLoggedIn.next(false);

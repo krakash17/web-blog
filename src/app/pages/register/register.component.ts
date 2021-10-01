@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit,NgZone } from '@angular/core';
 import {FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -39,6 +40,7 @@ export class RegisterComponent implements OnInit {
   };
 
     constructor(private ngZone: NgZone,
+      private http: HttpClient,
       private route: Router) {
       this.registerForm = new FormGroup({
         'email': new FormControl('', Validators.compose([
@@ -67,26 +69,47 @@ export class RegisterComponent implements OnInit {
     //function for registering the user to localstorage
     registerUser(){
 
-    var userId;
-     this.allUserData = JSON.parse(localStorage.getItem('data')!);
-     if(this.allUserData === null){
-      userId = 1;
-      this.allUserData =[];
-
-     }
-     else{
-       userId = this.allUserData.length + 1
-     }
+      
       const data =
-        { "id": userId,
-         "username":this.registerForm.value.email,
+        { 
+         "email":this.registerForm.value.email,
          "password":this.registerForm.value.password,
          "name":this.registerForm.value.name,
-         "number": this.registerForm.value.number,
+         "number": this.registerForm.value.number.toString(),
         }
-        this.allUserData.push(data);
-        localStorage.setItem('data',JSON.stringify(this.allUserData))
-        alert('User Added Succesfully');
-        this.route.navigateByUrl('login');
-    }
+        console.log(data)
+        var url = 'localhost:8001/auth/user'
+        this.http.post('http://localhost:8001/auth/user',data).subscribe(res => {
+          console.log(res)
+          this.route.navigateByUrl('login')
+        },
+        err => {
+          console.log(err);
+        }
+        )
+
+
+
+    // var userId;
+    //  this.allUserData = JSON.parse(localStorage.getItem('data')!);
+    //  if(this.allUserData === null){
+    //   userId = 1;
+    //   this.allUserData =[];
+
+    //  }
+    //  else{
+    //    userId = this.allUserData.length + 1
+    //  }
+    //   const data =
+    //     { "id": userId,
+    //      "username":this.registerForm.value.email,
+    //      "password":this.registerForm.value.password,
+    //      "name":this.registerForm.value.name,
+    //      "number": this.registerForm.value.number,
+    //     }
+    //     this.allUserData.push(data);
+    //     localStorage.setItem('data',JSON.stringify(this.allUserData))
+    //     alert('User Added Succesfully');
+    //     this.route.navigateByUrl('login');
+     }
 }

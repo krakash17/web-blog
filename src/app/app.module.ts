@@ -13,6 +13,7 @@ import { PostsComponent } from './pages/posts/posts.component';
 import { HttpClientModule } from '@angular/common/http';
 import { SinglePostComponent } from './components/single-post/single-post.component';
 import { UserService } from './user.service';
+import { FooterComponent } from './components/footer/footer.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { UserService } from './user.service';
     LoginComponent,
     RegisterComponent,
     PostsComponent,
-    SinglePostComponent
+    SinglePostComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

@@ -20,7 +20,7 @@ export class AppComponent implements OnInit{
     this.userService.isUserLoggedIn.subscribe( value => {
       this.isUserLoggedIn = value;
   });
-  if(JSON.parse(localStorage.getItem('User')!)){
+  if(JSON.parse(localStorage.getItem('token')!)){
     this.userService.isUserLoggedIn.next(true);
   }
 

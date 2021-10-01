@@ -9,28 +9,24 @@ import { UserService } from 'src/app/user.service';
 })
 export class HomeComponent implements OnInit {
 
-  isUserLoggedIn:boolean= false;
+  isUserLoggedIn: boolean = false;
   constructor(private route: Router,
-  private userService: UserService) { 
-    this.userService.isUserLoggedIn.subscribe( value => {
+    private userService: UserService) {
+    this.userService.isUserLoggedIn.subscribe(value => {
       this.isUserLoggedIn = value;
 
-  });
-  
+    });
+
   }
-  ngOnInit(){
-    
+  ngOnInit() {
+
   }
-  goToLogin(){
+  goToLogin() {
     this.route.navigateByUrl('/login');
-
-
   }
 
-  goToRegister(){
+  goToRegister() {
     this.route.navigateByUrl('/register');
-
-
   }
 
 }

@@ -10,55 +10,43 @@ import { PostService } from 'src/app/services/post.service';
 })
 export class PostsComponent implements OnInit {
 
- User: any;
-  
-  userPost:any = [];
+  User: any;
+
+  userPost: any = [];
   filterPost: any = [];
-  posts:any = [];
+  posts: any = [];
   searchTerm: string = "";
 
   constructor(private http: HttpClient,
     private route: Router,
-    private postService: PostService ){ }
+    private postService: PostService) { }
 
-  ngOnInit(){
-
-  
+  ngOnInit() {
     this.User = JSON.parse(localStorage.getItem('User')!);
-    this.http.get('assets/userData.json').subscribe(data =>{
+    this.http.get('assets/userData.json').subscribe(data => {
       this.posts = data;
-      for(let i=0; i<this.posts.length; i++){
-        if(this.User.id === this.posts[i].userId ){
-            this.userPost.push(this.posts[i]);
-            this.filterPost = this.userPost;
+      for (let i = 0; i < this.posts.length; i++) {
+        if (this.User.id === this.posts[i].userId) {
+          this.userPost.push(this.posts[i]);
+          this.filterPost = this.userPost;
         }
       }
     });
     console.log(this.posts)
-   
-  
-
-     
-     
-       
-         
-      }
-
-  setFilteredItems(){
-    
-    this.filterPost = this.filterItems(this.searchTerm);
-
   }
-//function for searching the post
+
+  setFilteredItems() {
+    this.filterPost = this.filterItems(this.searchTerm);
+  }
+  //function for searching the post
   filterItems(searchTerm: string) {
     return this.userPost.filter((post: { title: string; }) => {
       return post.title.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
     });
+  }
 
-}
-
-goToPost(postId: number){
-  this.route.navigateByUrl('single-post')
-  this.postService.getPostId(postId)
-}
+  goToPost(postId: number) {
+    this.route.navigateByUrl('single-post')
+    this.postService.getPostId(postId)
+  }
 }

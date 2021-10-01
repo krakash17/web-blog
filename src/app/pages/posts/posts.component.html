@@ -1,25 +1,23 @@
-
 <div class="content">
     <p class="text-dark" style="font-size: 3rem; margin-top: 2%;">
         Post
-       <p>
-       <div class="row search-row">
+    <p>
+    <div class="row search-row">
         <div class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search"#mainSearchbar
-            [(ngModel)]="searchTerm"(ngModelChange)="setFilteredItems()" placeholder="Search the Posts" aria-label="Search">
+            <input class="form-control mr-sm-2" type="search" #mainSearchbar [(ngModel)]="searchTerm"
+                (ngModelChange)="setFilteredItems()" placeholder="Search the Posts" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </div>
-      </div>
-          <div class="row main-row" >
-              <div class="row card-row">
-                <div class="card" *ngFor ="let post of filterPost" style="width: 25rem; margin:1%">
-                    <div class="card-body">
+    </div>
+    <div class="row main-row">
+        <div class="row card-row">
+            <div class="card" *ngFor="let post of filterPost" style="width: 25rem; margin:1%">
+                <div class="card-body">
                     <h5 class="card-title">{{post.title}}</h5>
                     <p class="card-text">{{post.body}}</p>
-                   <a (click)="goToPost(post.id)" class="btn btn-primary">Read More</a>
-               </div>
-               </div>
-              </div>
-          </div>
+                    <a (click)="goToPost(post.id)" class="btn btn-primary">Read More</a>
+                </div>
+            </div>
+        </div>
     </div>
-
+</div>
